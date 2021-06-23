@@ -1,0 +1,36 @@
+type User {
+  id: ID!
+  name: String
+  email: String!
+  password: String
+}
+type Post {
+  id: String
+  title: String
+  slug: String
+  body: String
+  image: String
+}
+input UserInput {
+  name: String
+  email: String!
+  password: String!
+}
+type RootQuery {
+  posts: [Post!]!
+}
+input PostInput {
+  title: String
+  slug: String
+  body: String
+  image: String
+}
+type RootMutation {
+  createUser(userInput: UserInput): User
+  createPost(postInput: PostInput): Post
+}
+
+schema {
+  query: RootQuery
+  mutation: RootMutation
+}

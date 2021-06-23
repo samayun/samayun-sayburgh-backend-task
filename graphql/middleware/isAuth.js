@@ -1,10 +1,13 @@
-function authenticateToken(req, res, next) {
-    req.user = {
-        _id: 5,
-        name: "Samu",
-        eamil: "Sas@gmail.com"
-    }
-    return next();
-}
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient();
 
+const authenticateToken = handler => (req, res) => {
+    req.user = {
+        id: 5,
+        name: "tested middleware",
+        email: "Samu@gmail.com"
+    }
+    req.prisma = prisma;
+    return handler(req, res)
+}
 module.exports = authenticateToken
