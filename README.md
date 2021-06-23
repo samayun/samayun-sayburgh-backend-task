@@ -7,6 +7,12 @@
   * API : [Developer's Book GraphQL Playground](https://developersbook.vercel.app/api/graphql)
 
   * Demo : [Developer's Book Live Site](https://developersbook.vercel.app)
+## Documentation
+
+* [How to work with multiple branch or team collaboration](docs/multile-branch-team-collaboration-guideline.md)
+
+* [How to Setup Prisma GrapHQL & Next.js Application ](docs/how-to-setup-graphql-prisma-nextjs-app.md)
+
 ## How to run this project
  * Clone first `git clone https://github.com/samayun/samayun-sayburgh-backend-task.git samayun-sayburgh-backend-task`
  * `cd samayun-sayburgh-backend-task`
@@ -21,9 +27,9 @@
 # Features
 * User can create blog
 * anyone can views blogs
-## Used Technologies
+# Used Technologies
 
-Backend [API SERVER URI `https://localhost:3000/api/graphql` ]
+Backend [API SERVER URI http://localhost:3000/api/graphql ]
 *  Language : Node.js
 *  Framework : Express.js ( express-graphql wrapper )
 *  ORM : Prisma

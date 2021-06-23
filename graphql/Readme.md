@@ -6,9 +6,9 @@
   <img src="https://miro.medium.com/max/6000/1*ZQywXQQMs32Dray68Sjptg.jpeg" alt="conference-events"  width="500px" /> </br>
 </p>
 
-Production Playground URL : `https://developersbook.vercel.app/api/graphql`
+Production Playground URL : https://developersbook.vercel.app/api/graphql
 
-Development Playground URL : `http://localhost:3000/api/graphql`
+Development Playground URL : http://localhost:3000/api/graphql
 
 # Technical Features
 

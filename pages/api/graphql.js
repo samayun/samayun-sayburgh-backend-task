@@ -17,4 +17,4 @@ const GraphQL = graphqlHTTP({
     }
 });
 
-export default authenticateToken(GraphQL)
+export default authenticateToken(GraphQL);
