@@ -3,22 +3,16 @@ const Types = require("./Types");
 const Inputs = require("./Inputs");
 
 const schema = buildSchema(`
-    ${Types}    
-
     ${Inputs}
-
+    ${Types}
+    
     type RootQuery {
-        events: [Event!]!
-        users: [User!]!
-        bookings:[Booking!]!
-        login(email:String!, password: String!): AuthData
+        posts: [Post!]!
     }
-
+    
     type RootMutation {
-        createEvent(eventInput: EventInput): Event
         createUser(userInput: UserInput): User
-        bookEvent(eventId: ID!): Booking
-        cancelBooking(bookingId: ID!): Event
+        createPost(postInput: PostInput): Post
     }
 
     schema {
