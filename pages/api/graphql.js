@@ -1,11 +1,11 @@
 const { graphqlHTTP } = require("express-graphql");
-const schema = require("../../graphql/schema/index");
-const rootValue = require("../../graphql/controller/index");
+const model = require("../../graphql/model/index");
+const controllers = require("../../graphql/controller/index");
 import authenticateToken from '../../graphql/middleware/isAuth';
 
 const GraphQL = graphqlHTTP({
-    schema,
-    rootValue,
+    schema: model,
+    rootValue: controllers,
     graphiql: true,
     customFormatErrorFn(error) {
         return {

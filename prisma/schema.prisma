@@ -12,31 +12,19 @@ generator client {
 }
 
 model User {
-  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  email     String   @unique
-  username  String?
-  name      String?
-  role      Role     @default(USER)
-  // posts     Post[]
-  createdAt DateTime @default(now())
+  id       String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  email    String  @unique
+  username String?
+  name     String?
+  role     Role    @default(USER)
 }
 
 model Post {
-  id       String @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  slug     String
-  title    String
-  body     String
-  image    String
-  // author    User?    @relation(fields: [authorId], references: [id])
-  authorId Int?
-
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  published         Boolean  @default(false)
-  // User      User?    @relation(fields: [userId], references: [id])
-  userId            String?
-  // User              User?    @relation(fields: [userId_PostToUser], references: [id])
-  userId_PostToUser String?
+  id    String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  slug  String
+  title String
+  body  String
+  image String
 }
 
 enum Role {

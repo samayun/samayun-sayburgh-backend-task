@@ -8,6 +8,7 @@ const schema = buildSchema(`
     
     type RootQuery {
         posts: [Post!]!
+        login(email: String, password: String) : AuthData
     }
     
     type RootMutation {
