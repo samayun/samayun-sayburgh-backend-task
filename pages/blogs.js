@@ -3,7 +3,7 @@ var NewComponent = function () {
         <div>
 
             {/* Main content */}
-            <div className="xl:w-6/12 lg:w-9/12 w-full  xl:ml-6 lg:mr-6">
+            <div className="xl:w-12/12 lg:w-9/12 w-full  xl:ml-6 lg:mr-6">
                 {/* post view */}
                 <div className="rounded-sm overflow-hidden bg-white shadow-sm">
                     <div className>
