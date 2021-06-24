@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from "next/image";
+import Head from "next/head";
 import blogs from "../api/blogData";
 
 function SingleBlog({ blog }) {
@@ -43,8 +44,10 @@ function SingleBlog({ blog }) {
 }
 const App = () => {
   return (
-    <div >
-      {/* title */}
+    <>
+      <Head>
+        <title> Developer's Book | Spread knowledge everywhere </title>
+      </Head>
       <div className="flex bg-white px-3 py-2 justify-between items-center rounded-sm mb-5">
         <h5 className="text-base uppercase font-semibold font-roboto">POSTS</h5>
         <a href="#" className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition">
@@ -57,7 +60,7 @@ const App = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         {blogs?.map((blog, index) => <SingleBlog key={index} blog={blog} />)}
       </div>
-    </div>
+    </>
   );
 };
 

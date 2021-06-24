@@ -1,7 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 const meta = {
     title: "Developer's Book - Blog Application for Developers",
-    image: "/socialmedia.png",
+    image: "/preview.png",
     url: "https://developerbook.vercel.app",
     description: "Developer's Book is personal blog application for coders"
 }
