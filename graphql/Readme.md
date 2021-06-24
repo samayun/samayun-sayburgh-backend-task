@@ -19,6 +19,42 @@ Development Playground URL : http://localhost:3000/api/graphql
 * 
 
 # Queries & Mutation
+### @query login(email:String, password: String): AuthData
+```js
+{
+  login(email: "samayun.m.chowdhury@gmail.com", password: "123456") {
+    userId
+    user {
+      id
+      name
+      username
+      email
+      role
+    }
+    token
+    tokenExpiration
+  }
+}
+
+```
+### @query register(userInput: {name:String", username:String, email:String, password:String, role: "ADMIN" | "USER"}: AuthData
+```js
+  mutation {
+    register(userInput: {name: "Zahid Khan", username: "samayunmc", email: "samayun.m.chowdhury@gmail.com", password: "123456", role: "ADMIN"}) {
+      userId
+      user {
+        id
+        name
+        username
+        email
+        role
+      }
+      token
+      tokenExpiration
+    }
+  }
+
+```
 
 ### @query posts
 ```js
@@ -49,6 +85,42 @@ mutation {
     body
     image
   }
+}
+
+```
+
+
+# PSR (Prisma Schema)
+
+```js
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongodb"]
+}
+
+model User {
+  id       String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  email    String  @unique
+  username String?
+  name     String?
+  password String
+  role     String  @default("USER")
+}
+
+model Post {
+  id         String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  slug       String
+  title      String
+  body       String
+  image      String
+  isPulished Boolean
+  author     String
+  createdAt  DateTime @default(now())
 }
 
 ```

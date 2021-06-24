@@ -10,9 +10,9 @@ const GraphQL = graphqlHTTP({
     customFormatErrorFn(error) {
         return {
             ...error,
-            message: error.message,
-            name: error.name || "An error occured",
-            code: error.originalError ? error.originalError.code : 500
+            // message: error.message,
+            // name: error.name || "An error occured",
+            // code: error.originalError ? error.originalError.code : 500
         }
     }
 });

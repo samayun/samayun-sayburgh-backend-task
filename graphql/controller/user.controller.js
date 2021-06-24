@@ -1,4 +1,19 @@
 const { generateJWTToken, makeHash, compareHash } = require('../utils/jwt');
+const { validateRegisterRequest, validateLoginRequest } = require('../validator/user.validator');
+
+const responseAuthTokenFromUser = user => {
+    const loggedInUser = {
+        ...user,
+        password: null
+    }
+    const token = generateJWTToken(loggedInUser);
+    return {
+        userId: user.id,
+        user: loggedInUser,
+        token,
+        tokenExpiration: +Date.now() + 7 * 36000
+    };
+}
 
 const userController = {
     users: async (_, req) => {
@@ -9,27 +24,34 @@ const userController = {
             throw error;
         }
     },
-    createUser: async ({ userInput }, { prisma }) => {
+    login: async ({ email, password }, { prisma }) => {
+        try {
+            // VALIDATION request
+            validateLoginRequest({ email, password });
+            // CHECK is the user is already exists on database otherwise show errors
+            let user = await prisma.user.findUnique({ where: { email } });
+            if (!user) {
+                throw new Error("There has no user found with this email");
+            }
+            // when user is available , then check does unput password is valid with db hashed password
+            // if doesn't match means password is incorrect
+            let isMatch = await compareHash(password, user.password);
+            if (user && !isMatch) {
+                throw new Error("Password is incorrect");
+            }
+            // SEND RESPONSE TOKEN
+            return responseAuthTokenFromUser(user);
+
+        } catch (err) {
+            throw new Error(err);
+        }
+    },
+    register: async ({ userInput }, { prisma }) => {
         try {
             // 1. Validate request
-            const { name, email, password } = userInput;
-            if (!name) {
-                throw new Error("Name is required");
-            }
-            if (!email) {
-                throw new Error("Email is required");
-            }
-            if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi.test(email)) {
-                throw new Error("You must use valid email ");
-            }
-            if (!password) {
-                throw new Error("Password is required");
-            }
-            if (password.length < 6) {
-                throw new Error("Password must be at least 6 character");
-            }
+            const { username, email, password } = userInput;
+            validateRegisterRequest(userInput);
             // 2. CHECK is user account already exists
-
             const hasUserAccount = await prisma.user.findUnique({ where: { email } });
             if (hasUserAccount) {
                 throw new Error("User account already exists");
@@ -39,56 +61,12 @@ const userController = {
             const hashedPassword = await makeHash(password, 12);
             // 4. CREATE User & back response
             const user = { ...userInput, password: hashedPassword };
-            const result = await prisma.user.create({ data: user })
+            const createdUser = await prisma.user.create({ data: user });
 
-            // const createUser = await req.prisma.user.create({ data: userInput });
-            // console.log(createUser)
-            // return createUser;
-            return { ...result, password: null }
+            // RESPONSE Token Credentials 
+            return responseAuthTokenFromUser(createdUser);
         } catch (error) {
             throw error;
-        }
-    },
-    login: async ({ email, password }, { prisma }) => {
-
-        try {
-            // VALIDATION request
-            if (!email) {
-                throw new Error("Email is required");
-            }
-            if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi.test(email)) {
-                throw new Error("You must use valid email ");
-            }
-            if (!password) {
-                throw new Error("Password is required");
-            }
-            if (password.length < 6) {
-                throw new Error("Password must be at least 6 character");
-            }
-            let user = await prisma.user.findUnique({ where: { email } });
-            if (!user) {
-                throw new Error("There has no user found with this email");
-            }
-            // JWT VALIDATION
-            let isMatch = await compareHash(password, user.password);
-            if (user && !isMatch) {
-                throw new Error("Password is incorrect");
-            }
-            // SEND RESPONSE TOKEN
-            const loggedInUser = {
-                id: user.id,
-                name: user.name,
-                email
-            }
-            const token = generateJWTToken(loggedInUser);
-            return {
-                userId: user.id,
-                token,
-                tokenExpiration: +Date.now() + 7 * 36000
-            };
-
-        } catch (err) {
-            throw new Error(err);
         }
     }
 }

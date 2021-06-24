@@ -12,7 +12,7 @@ const schema = buildSchema(`
     }
     
     type RootMutation {
-        createUser(userInput: UserInput): User
+        register(userInput: UserInput): AuthData
         createPost(postInput: PostInput): Post
     }
 

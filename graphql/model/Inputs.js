@@ -1,8 +1,10 @@
 const inputs = `
     input UserInput {
         name: String
+        username: String
         email: String!
         password: String!
+        role: String
     }
     input PostInput {
         title:String
