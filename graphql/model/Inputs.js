@@ -11,6 +11,8 @@ const inputs = `
         slug:String
         body:String
         image: String
+        isPublished: Boolean
+        author: String
     }
 `
 module.exports = inputs;

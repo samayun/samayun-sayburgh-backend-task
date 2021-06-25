@@ -6,12 +6,13 @@ const responseAuthTokenFromUser = user => {
         ...user,
         password: null
     }
-    const token = generateJWTToken(loggedInUser);
+    const access_token = generateJWTToken(loggedInUser);
+    const refresh_token = generateJWTToken(loggedInUser, "7d");
     return {
         userId: user.id,
         user: loggedInUser,
-        token,
-        tokenExpiration: +Date.now() + 7 * 36000
+        access_token,
+        refresh_token
     };
 }
 

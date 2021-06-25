@@ -1,0 +1,12 @@
+query fethPosts {
+  posts {
+    id
+    title
+    slug
+    body
+    image
+    author
+    isPublished
+    createdAt
+  }
+}

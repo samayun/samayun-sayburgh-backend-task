@@ -17,7 +17,7 @@ export default function MobileNavigation() {
                     </div>
                     {/* navlink */}
                     <h3 className="text-xl font-semibold text-gray-700 mb-1 font-roboto pl-3 pt-3">Menu</h3>
-                    <div className>
+                    <div className="">
                         {
                             routes?.map((route) => {
                                 return (

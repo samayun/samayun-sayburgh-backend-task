@@ -14,12 +14,15 @@ const typedefs = `
         slug:String
         body:String
         image: String
+        isPublished: Boolean
+        author: String
+        createdAt: String
     }
     type AuthData {
         userId: ID!
         user: User!
-        token: String!
-        tokenExpiration: String!
+        access_token: String!
+        refresh_token: String!
     }
 `
 
