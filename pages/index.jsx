@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import Image from "next/image";
+import Head from "next/head";
+import RightSidebar from '../layout/sections/RightSidebar';
 import blogs from "../api/blogData";
 
 function SingleBlog({ blog }) {
@@ -41,15 +42,16 @@ function SingleBlog({ blog }) {
     </div>
   )
 }
-const App = () => {
+
+function Blogs({ blogs }) {
   return (
     <div >
       {/* title */}
       <div className="flex bg-white px-3 py-2 justify-between items-center rounded-sm mb-5">
         <h5 className="text-base uppercase font-semibold font-roboto">POSTS</h5>
-        <a href="#" className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition">
-          Create Post
-        </a>
+        <Link href="/create-post">
+          <a className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition">Create Post</a>
+        </Link>
       </div>
       {/* big post */}
 
@@ -58,6 +60,22 @@ const App = () => {
         {blogs?.map((blog, index) => <SingleBlog key={index} blog={blog} />)}
       </div>
     </div>
+  )
+}
+const App = () => {
+  return (<>
+    <Head>
+      <title> Developer's Book | Spread knowledge everywhere </title>
+    </Head>
+    <main className="pt-12 bg-gray-100 pb-12">
+      <div className="container mx-auto px-4 flex flex-wrap lg:flex-nowrap">
+        <div className="xl:w-8/12 lg:w-9/12 w-full  xl:ml-6 lg:mr-6">
+          <Blogs blogs={blogs} />
+        </div>
+        <RightSidebar />
+      </div>
+    </main>
+  </>
   );
 };
 

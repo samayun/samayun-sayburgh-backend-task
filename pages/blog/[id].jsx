@@ -1,4 +1,4 @@
-import RightSidebar from '../layout/sections/RightSidebar';
+import RightSidebar from '../../layout/sections/RightSidebar';
 const author = {
     image: "https://miro.medium.com/fit/c/56/56/1*SSYUQ8TIIDqoE4sKrcTCXw.jpeg",
     name: "Samayun Miah Chowdhury",

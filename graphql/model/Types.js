@@ -18,8 +18,8 @@ const typedefs = `
     type AuthData {
         userId: ID!
         user: User!
-        token: String!
-        tokenExpiration: String!
+        access_token: String!
+        refresh_token: String!
     }
 `
 

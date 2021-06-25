@@ -22,35 +22,32 @@ Development Playground URL : http://localhost:3000/api/graphql
 ### @query login(email:String, password: String): AuthData
 ```js
 {
-  login(email: "samayun.m.chowdhury@gmail.com", password: "123456") {
+  login(email:"samayun.m.chowdhury@gmail.com", password:"123456") {
     userId
     user {
       id
       name
       username
       email
-      role
     }
-    token
-    tokenExpiration
+		access_token
+    refresh_token
   }
 }
-
 ```
 ### @query register(userInput: {name:String", username:String, email:String, password:String, role: "ADMIN" | "USER"}: AuthData
 ```js
   mutation {
     register(userInput: {name: "Zahid Khan", username: "samayunmc", email: "samayun.m.chowdhury@gmail.com", password: "123456", role: "ADMIN"}) {
-      userId
-      user {
-        id
-        name
-        username
-        email
-        role
-      }
-      token
-      tokenExpiration
+    userId
+    user {
+      id
+      name
+      username
+      email
+    }
+		access_token
+    refresh_token
     }
   }
 
