@@ -45,21 +45,20 @@ function SingleBlog({ blog }) {
 
 function Blogs({ blogs }) {
   return (
-    <div >
-      {/* title */}
+    <>
+      <Head>
+        <title> Developer's Book | Spread knowledge everywhere </title>
+      </Head>
       <div className="flex bg-white px-3 py-2 justify-between items-center rounded-sm mb-5">
         <h5 className="text-base uppercase font-semibold font-roboto">POSTS</h5>
         <Link href="/create-post">
           <a className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition">Create Post</a>
         </Link>
       </div>
-      {/* big post */}
-
-      {/* regular post */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         {blogs?.map((blog, index) => <SingleBlog key={index} blog={blog} />)}
       </div>
-    </div>
+    </>
   )
 }
 const App = () => {

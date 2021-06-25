@@ -7,6 +7,9 @@
   * API : [Developer's Book GraphQL Playground](https://developersbook.vercel.app/api/graphql)
 
   * Demo : [Developer's Book Live Site](https://developersbook.vercel.app)
+
+## Homepage
+![Homepage Developer's Book](public/preview.png)
 ## Documentation
 
 * [How to work with multiple branch or team collaboration](docs/multile-branch-team-collaboration-guideline.md)
