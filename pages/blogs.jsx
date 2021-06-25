@@ -1,7 +1,6 @@
-var NewComponent = function () {
+export default function NW() {
     return (
         <div>
-
             {/* Main content */}
             <div className="xl:w-12/12 lg:w-9/12 w-full  xl:ml-6 lg:mr-6">
                 {/* post view */}
@@ -253,6 +252,3 @@ var NewComponent = function () {
         </div>
     );
 }
-
-
-export default NewComponent;

@@ -19,7 +19,6 @@ export default function MainAppLayout({ children }) {
                     <div className="xl:w-8/12 lg:w-9/12 w-full  xl:ml-6 lg:mr-6">
                         {children}
                     </div>
-                    {/* right sidebar */}
                     <RightSidebar />
                 </div>
             </main>
