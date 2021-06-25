@@ -3,8 +3,8 @@ import Head from "next/head";
 import RightSidebar from '../layout/sections/RightSidebar';
 import blogs from "../api/blogData";
 import { useQuery } from "@apollo/client";
-
-import QUERY_POSTS from '../queries/fetchPosts.graphql';
+import { initializeApollo } from '../lib/apollo';
+import QUERY_POSTS from '../lib/queries/fetchPosts.graphql';
 
 function SingleBlog({ blog }) {
   const { title, slug, body, author, tags, createdAt, image } = blog;
@@ -64,15 +64,16 @@ function Blogs({ blogs }) {
 }
 
 // export async function getStaticProps() {
-//   const { data, loading, error } = await useQuery(QUERY_POSTS);
-//   console.log("response ", response)
+//   // const { data, loading, error } = await useQuery(QUERY_POSTS);
+//   const apolloClient = initializeApollo();
+//   await apolloClient.query({ query: QUERY_POSTS });
 //   return {
 //     props: {
-//       fetchposts: data.posts ,
+//       initialApolloState: apolloClient.cache.extract()
 //     },
 //   };
 // }
-const App = ({ fetchposts }) => {
+const App = ({ initialApolloState }) => {
   const { data, loading, error } = useQuery(QUERY_POSTS);
   // make sure all data is loaded
   if (loading) {
@@ -91,7 +92,6 @@ const App = ({ fetchposts }) => {
       <div className="container mx-auto px-4 flex flex-wrap lg:flex-nowrap">
         <div className="xl:w-8/12 lg:w-9/12 w-full  xl:ml-6 lg:mr-6">
           <Blogs blogs={data?.posts} />
-
         </div>
         <RightSidebar />
       </div>
