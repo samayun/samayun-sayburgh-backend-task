@@ -1,0 +1,27 @@
+mutation RegisterUser(
+  $name: String
+  $username: String
+  $email: String!
+  $password: String!
+  $role: String
+) {
+  register(
+    userInput: {
+      name: $name
+      username: $username
+      email: $email
+      password: $password
+      role: $role
+    }
+  ) {
+    userId
+    user {
+      id
+      name
+      username
+      email
+    }
+    access_token
+    refresh_token
+  }
+}

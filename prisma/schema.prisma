@@ -14,19 +14,19 @@ generator client {
 model User {
   id       String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
   email    String  @unique
-  username String?
+  username String? @unique
   name     String?
   password String
   role     String  @default("USER")
 }
 
 model Post {
-  id         String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  slug       String
-  title      String
-  body       String
-  image      String
-  isPulished Boolean
-  author     String
-  createdAt  DateTime @default(now())
+  id          String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  slug        String   @unique
+  title       String
+  body        String
+  image       String
+  isPublished Boolean  @default(true)
+  author      String
+  createdAt   DateTime @default(now())
 }

@@ -19,7 +19,7 @@ Development Playground URL : http://localhost:3000/api/graphql
 * 
 
 # Queries & Mutation
-### @query login(email:String, password: String): AuthData
+ * query login(email:String, password: String): AuthData
 ```js
 {
   login(email:"samayun.m.chowdhury@gmail.com", password:"123456") {
@@ -35,7 +35,7 @@ Development Playground URL : http://localhost:3000/api/graphql
   }
 }
 ```
-### @query register(userInput: {name:String", username:String, email:String, password:String, role: "ADMIN" | "USER"}: AuthData
+*  @query register(userInput: {name:String", username:String, email:String, password:String, role: "ADMIN" | "USER"}: AuthData
 ```js
   mutation {
     register(userInput: {name: "Zahid Khan", username: "samayunmc", email: "samayun.m.chowdhury@gmail.com", password: "123456", role: "ADMIN"}) {
@@ -53,20 +53,23 @@ Development Playground URL : http://localhost:3000/api/graphql
 
 ```
 
-### @query posts
+* @query posts
 ```js
-{
-  posts {
-    id
-    slug
-    title
-    body
-    image
-	}
-}
+  query fethPosts {
+    posts {
+      id
+      title
+      slug
+      body
+      image
+      author
+      isPublished
+      createdAt
+    }
+  }
 ```
 
-### @mutation createPost
+* @mutation createPost
 
 ```js
 mutation {
@@ -103,21 +106,26 @@ generator client {
 model User {
   id       String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
   email    String  @unique
-  username String?
+  username String? @unique
   name     String?
   password String
   role     String  @default("USER")
 }
 
 model Post {
-  id         String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  slug       String
-  title      String
-  body       String
-  image      String
-  isPulished Boolean
-  author     String
-  createdAt  DateTime @default(now())
+  id          String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  slug        String   @unique
+  title       String
+  body        String
+  image       String
+  isPublished Boolean  @default(true)
+  author      String
+  createdAt   DateTime @default(now())
 }
+```
+
+
+```js
+
 
 ```

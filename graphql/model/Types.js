@@ -14,6 +14,9 @@ const typedefs = `
         slug:String
         body:String
         image: String
+        isPublished: Boolean
+        author: String
+        createdAt: String
     }
     type AuthData {
         userId: ID!

@@ -1,0 +1,36 @@
+mutation createNewPost(
+  $title: String
+  $slug: String
+  $body: String
+  $image: String
+  $author: String
+  $isPublished: Boolean
+) {
+  createPost(
+    postInput: {
+      title: $title
+      slug: $slug
+      body: $body
+      image: $image
+      author: $author
+      isPublished: $isPublished
+    }
+  ) {
+    id
+    title
+    slug
+    body
+    image
+    isPublished
+    author
+  }
+}
+
+# {
+#     "title": "Vue what ? why? how?",
+#     "slug": "vue-what-why-how",
+#     "body": "It's a great allterrnative waay of rest to make flexible API",
+#     "image": "https://res.cloudinary.com/academind-gmbh/image/upload/f_auto,q_auto/c_limit,dpr_3.0,g_center,w_300/v1/academind.com/content/courses/javascript-tricky-parts/javascript-course-the-tricky-parts",
+#     "author":"60d4e79e00fe52e60035eb93",
+#     "isPublished": true
+# }

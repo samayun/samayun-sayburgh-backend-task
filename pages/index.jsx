@@ -2,9 +2,13 @@ import Link from 'next/link';
 import Head from "next/head";
 import RightSidebar from '../layout/sections/RightSidebar';
 import blogs from "../api/blogData";
+import { useQuery } from "@apollo/client";
+
+import QUERY_POSTS from '../queries/fetchPosts.graphql';
 
 function SingleBlog({ blog }) {
   const { title, slug, body, author, tags, createdAt, image } = blog;
+  console.log(`blog `, blog)
   return (
     <div className="rounded-sm bg-white p-4 pb-5 shadow-sm">
       <Link href={`/blog/${slug}`} key={slug}>
@@ -29,7 +33,7 @@ function SingleBlog({ blog }) {
             <span className="mr-2 text-xs">
               <i className="far fa-user" />
             </span>
-            {author?.name}
+            {author?.name || author}
           </div>
           <div className="flex text-gray-400 text-sm items-center">
             <span className="mr-2 text-xs">
@@ -46,9 +50,6 @@ function SingleBlog({ blog }) {
 function Blogs({ blogs }) {
   return (
     <>
-      <Head>
-        <title> Developer's Book | Spread knowledge everywhere </title>
-      </Head>
       <div className="flex bg-white px-3 py-2 justify-between items-center rounded-sm mb-5">
         <h5 className="text-base uppercase font-semibold font-roboto">POSTS</h5>
         <Link href="/create-post">
@@ -61,20 +62,40 @@ function Blogs({ blogs }) {
     </>
   )
 }
-const App = () => {
-  return (<>
+
+// export async function getStaticProps() {
+//   const { data, loading, error } = await useQuery(QUERY_POSTS);
+//   console.log("response ", response)
+//   return {
+//     props: {
+//       fetchposts: data.posts ,
+//     },
+//   };
+// }
+const App = ({ fetchposts }) => {
+  const { data, loading, error } = useQuery(QUERY_POSTS);
+  // make sure all data is loaded
+  if (loading) {
+    return <p>loading...</p>;
+  }
+
+  // check for errors
+  if (error) {
+    return <p>:( an error happened</p>;
+  }
+  return (<div>
     <Head>
       <title> Developer's Book | Spread knowledge everywhere </title>
     </Head>
     <main className="pt-12 bg-gray-100 pb-12">
       <div className="container mx-auto px-4 flex flex-wrap lg:flex-nowrap">
         <div className="xl:w-8/12 lg:w-9/12 w-full  xl:ml-6 lg:mr-6">
-          <Blogs blogs={blogs} />
+          <Blogs blogs={data?.posts} />
         </div>
         <RightSidebar />
       </div>
     </main>
-  </>
+  </div>
   );
 };
 
