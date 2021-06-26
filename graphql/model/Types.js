@@ -7,7 +7,6 @@ const typedefs = `
         password: String
         role: String
     }
-
     type Post {
         id: String
         title:String
@@ -15,7 +14,7 @@ const typedefs = `
         body:String
         image: String
         isPublished: Boolean
-        author: String
+        author: User
         createdAt: String
     }
     type AuthData {

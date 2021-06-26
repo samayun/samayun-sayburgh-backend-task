@@ -55,20 +55,44 @@ Development Playground URL : http://localhost:3000/api/graphql
 
 * @query posts
 ```js
-  query fethPosts {
-    posts {
+query fethPosts {
+  posts {
+    id
+    title
+    slug
+    body
+    image
+    author {
+      id
+      name
+      username
+      email
+      role
+    }
+    isPublished
+    createdAt
+  }
+}
+
+```
+* fetch Single Post By Slug
+```
+  query fetchPost($slug: String) {
+    post(slug: $slug) {
       id
       title
       slug
       body
+      author {
+        name
+        email
+        role
+      }
       image
-      author
       isPublished
-      createdAt
     }
   }
 ```
-
 * @mutation createPost
 
 ```js

@@ -1,12 +1,14 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient();
+import { verifyToken } from '../utils/jwt'
 
 const authenticateToken = handler => (req, res) => {
     req.prisma = prisma;
     const authHeader = req.headers['authorization']
     const refreshTokenHeader = req.headers['refreshToken']
     // res.cookie("access_token", "token");
-
+    console.log(authHeader)
+    req.authHeader = authHeader
     if (!authHeader) {
         req.isAuth = false;
         return handler(req, res);

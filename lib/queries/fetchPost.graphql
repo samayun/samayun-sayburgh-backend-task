@@ -1,18 +1,15 @@
-query fethPosts {
-  posts {
+query fetchPost($slug: String) {
+  post(slug: $slug) {
     id
     title
     slug
     body
     author {
-      id
       name
-      username
       email
       role
     }
     image
     isPublished
-    createdAt
   }
 }
