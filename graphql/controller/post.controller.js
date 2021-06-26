@@ -4,9 +4,8 @@ const postController = {
     posts: async (args, req) => {
         console.log(`req.authHeader`, req.authHeader)
         console.log(req.isAuth)
-
         // checkIsAuth(req);
-        console.log(process.env.DATABASE_URL)
+
         const posts = await req.prisma.post.findMany();
         return posts.map(TransformPost)
     },
