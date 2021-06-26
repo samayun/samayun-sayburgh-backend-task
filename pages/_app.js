@@ -3,6 +3,7 @@ import '../styles/index.css';
 import { ApolloProvider } from "@apollo/client";
 import MainAppLayout from '../layout/MainApp.layout';
 import { useApollo } from '../lib/apollo';
+import Head from '../components/Head';
 
 
 function MyApp({ Component, pageProps }) {
@@ -10,6 +11,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={apolloClient}>
       <MainAppLayout {...pageProps}>
+        <Head title={pageProps.title} />
         <Component {...pageProps} />
       </MainAppLayout>
     </ApolloProvider>

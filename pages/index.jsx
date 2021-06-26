@@ -5,6 +5,8 @@ import blogs from "../api/blogData";
 import { useQuery } from "@apollo/client";
 import { initializeApollo } from '../lib/apollo';
 import QUERY_POSTS from '../lib/queries/fetchPosts.graphql';
+import Loading from '../components/Loading';
+import ErrorComponent from '../components/ErrorComponent';
 
 function SingleBlog({ blog }) {
   const { title, slug, body, author, tags, createdAt, image } = blog;
@@ -77,12 +79,20 @@ const App = ({ initialApolloState }) => {
   const { data, loading, error } = useQuery(QUERY_POSTS);
   // make sure all data is loaded
   if (loading) {
-    return <h2 className="text-center font-bold font-size-100">loading...</h2>;
+    return <Loading />
   }
 
   // check for errors
   if (error) {
-    return <h2>:( an error happened</h2>;
+    return <>
+      <div className="flex bg-white px-3 py-2 justify-between items-center rounded-sm mb-5">
+        <h5 className="text-base uppercase font-semibold font-roboto">POSTS</h5>
+        <Link href="/create-post">
+          <a className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition">Create Post</a>
+        </Link>
+      </div>
+      <ErrorComponent error={error.message || " Failed to fetch Posts"} />
+    </>
   }
   return (<div>
     <Head>
