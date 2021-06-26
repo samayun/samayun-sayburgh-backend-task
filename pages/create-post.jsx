@@ -1,8 +1,13 @@
+import { useRouter } from 'next/router'
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ShowError from "../components/ShowError";
 // import { createPostAction } from "../store/actions/post.action";
+import { useMutation } from "@apollo/client";
+import { initializeApollo } from '../lib/apollo';
+import QUERY_CREATE_POST from '../lib/queries/createNewPost.graphql';
+import Loading from '../components/Loading';
 
 export function getStaticProps() {
   return {
@@ -11,26 +16,37 @@ export function getStaticProps() {
 }
 
 export default function CreatePost() {
-  const [image, setImage] = useState(
-    "https://res.cloudinary.com/academind-gmbh/image/upload/f_auto,q_auto/c_limit,dpr_3.0,g_center,w_300/v1/academind.com/content/courses/javascript-tricky-parts/javascript-course-the-tricky-parts"
-  );
+  const router = useRouter()
+  const [CREATE_POST] = useMutation(QUERY_CREATE_POST);
+  const [image, setImage] = useState();
+  const [error, setError] = useState();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = credentials => {
-    console.log({
+  const onSubmit = async credentials => {
+    const variables = {
       ...credentials,
       image,
-      isPublished: Boolean(credentials.isPublished)
-    });
-    // dispatch(createPostAction({
-    //   ...credentials,
-    //   image
-    // }));
-    // reset();
+      isPublished: Boolean(credentials.isPublished),
+      author: "60d62bc200d4454b00133a2f"
+    }
+    // CREATE_POST({ variables });
+    const { data, loading, error } = await CREATE_POST({ variables });
+    // // make sure all data is loaded
+    if (loading) {
+      return <Loading />
+    }
+    if (error) {
+      console.log(`error `, error);
+      setError(error);
+    }
+    if (data?.createPost) {
+      // mutate posts state & push this on that array : data.createPost
+      router.push('/');
+    }
   }
   const _handleReaderLoaded = (readerEvt) => {
     let binaryString = readerEvt.target.result;
@@ -60,6 +76,7 @@ export default function CreatePost() {
       <div className="sm:flex-auto md:flex container">
         {/* xl:w-8/12 lg:w-9/12 w-full xl:ml-6 lg:mr-6 */}
         <div className="bg-white sm:order-last md:order-first  w-12/12 w-full md:w-8/12  shadow-xl rounded p-5">
+          {error && <ShowError title="Unable to create post .send valid credentials" semiTitle="Failed to create Post" />}
           <h1 className="text-3xl font-medium">Create Post</h1>
           {errors.title && <ShowError title="title is required" />}
 

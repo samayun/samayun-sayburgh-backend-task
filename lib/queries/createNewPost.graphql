@@ -19,13 +19,12 @@ mutation createNewPost(
     id
     title
     slug
+    author
     body
     image
     isPublished
-    author
   }
 }
-
 # {
 #     "title": "Vue what ? why? how?",
 #     "slug": "vue-what-why-how",
