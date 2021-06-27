@@ -1,0 +1,17 @@
+mutation DeletePost($slug: String) {
+  deletePost(slug: $slug) {
+    id
+    title
+    slug
+    author {
+      id
+      name
+      email
+      username
+      role
+    }
+    body
+    image
+    isPublished
+  }
+}

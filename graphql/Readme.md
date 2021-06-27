@@ -16,7 +16,15 @@ Development Playground URL : http://localhost:3000/api/graphql
 * MVC Design Pattern implemented for easy mangement
 * Prisma used for flexible Database Query. If team decides to change Database no need to change any codes just change the DB_CONNECTION_STRING from Hosted Server's ENVIRONMENT_VARIABLE
 * Batch Query for optimize fetching data
-* 
+*  I have handled token based authentication by JWT
+* 2 Tier Architecture .Application & API server hosted on a server for low cost & DB server hosted on different server.
+* MVC Design PAttern implemented
+* Authentication Header verified on both side (Client & bServer Side )
+* User can create blog, read others blog update own blog & delete own blog
+* User can see his/her profile
+* Data managed via GraphQL. Here is that playground  . You can query & mutate following this documentation
+* Frontend managed via Next.js. Because a blog app should be SEO friendly. Next.js is a good solution for this. Auto code splitting , lazy loading, image progressive loading is implemented by default. 
+
 
 # Queries & Mutation
  * query login(email:String, password: String): AuthData
@@ -111,6 +119,50 @@ mutation {
   }
 }
 
+```
+* @mutation updatePost
+
+```js
+mutation UpdatePost($key: String, $title: String, $slug: String, $body: String, $image: String, $author: String, $isPublished: Boolean) {
+  updatePost(slug: $key, postInput: {title: $title, slug: $slug, body: $body, image: $image, author: $author, isPublished: $isPublished}) {
+    id
+    title
+    slug
+    author {
+      id
+      name
+      email
+      username
+      role
+    }
+    body
+    image
+    isPublished
+  }
+}
+
+```
+
+* delete a postBySlug 
+
+```js
+mutation DeletePost($slug: String) {
+  deletePost(slug: $slug) {
+    id
+    title
+    slug
+    author {
+      id
+      name
+      email
+      username
+      role
+    }
+    body
+    image
+    isPublished
+  }
+}
 ```
 
 

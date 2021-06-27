@@ -1,0 +1,35 @@
+mutation UpdatePost(
+  $key: String
+  $title: String
+  $slug: String
+  $body: String
+  $image: String
+  $author: String
+  $isPublished: Boolean
+) {
+  updatePost(
+    slug: $key
+    postInput: {
+      title: $title
+      slug: $slug
+      body: $body
+      image: $image
+      author: $author
+      isPublished: $isPublished
+    }
+  ) {
+    id
+    title
+    slug
+    author {
+      id
+      name
+      email
+      username
+      role
+    }
+    body
+    image
+    isPublished
+  }
+}

@@ -32,38 +32,42 @@ const postController = {
     post: async ({ slug }, req) => {
         // checkIsAuth(req);
         try {
-            const fetchedPost = await postLoader.load(slug);
+            const fetchedPost = await req.prisma.post.findFirst({ where: { slug } });
+            console.log(fetchedPost)
             return TransformPost(fetchedPost);
         } catch (error) {
-            throw new Error("post failed");
+            throw new Error(error);
         }
     },
     updatePost: async ({ slug, postInput }, req) => {
         try {
             // checkIsAuth(req);
-            console.log(req.user);
-            const fetchedPost = await prisma.post.findUnique({ where: { slug } });
-            const createsPost = await req.prisma.post.create({ data: postInput });
-            console.log(createsPost);
-            return createsPost;
+            const updatedPost = await req.prisma.post.update({
+                where: {
+                    slug: slug,
+                },
+                data: postInput,
+            })
+            console.log(`updatedPost`, updatedPost);
+            return TransformPost(updatedPost);
         } catch (error) {
-            throw new Error("post failed");
+            throw new Error(error);
         }
     },
-    deletePost: async ({ slug }, { req, prisma }) => {
+    deletePost: async ({ slug }, req) => {
         // checkIsAuth(req);
         try {
-            const fetchedPost = await prisma.post.findUnique({ where: { slug } });
-            return fetchedPost;
+            const deletedPost = await req.prisma.post.delete({ where: { slug } });
+            return TransformPost(deletedPost);
         } catch (error) {
             console.log(error);
-            throw new Error("post failed");
+            throw new Error("Record not found");
         }
     },
-    profilePosts: async ({ userId }, { req, prisma }) => {
+    profilePosts: async ({ userId }, req) => {
         // checkIsAuth(req);
         try {
-            const profilePosts = await prisma.post.findMany({ where: { author: userId } });
+            const profilePosts = await req.prisma.post.findMany({ where: { author: userId } });
             return profilePosts;
         } catch (error) {
             console.log(error);

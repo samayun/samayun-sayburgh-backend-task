@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient();
 
 const postLoader = new DataLoader(slug => {
-    console.log(typeof slug.toString() + " ids Requested")
+    console.log(typeof slug.toString() + " ids Requested");
     return getPost(slug.toString());
 });
 const userLoader = new DataLoader(userIds => {
@@ -21,8 +21,11 @@ const getUser = async userId => {
 const getPost = async slug => {
     try {
         console.log(`Fetched postId =>  ${slug.toString()}`);
-        return prisma.post.findMany({ where: { slug: slug.toString() } });
+        const post = await prisma.post.findMany({ where: { slug: slug.toString() } });
+        // console.log(TransformPost(post));
+        return post;
     } catch (error) {
+        console.log(error)
         throw new Error(error);
     }
 }
