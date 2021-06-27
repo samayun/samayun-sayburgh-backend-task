@@ -30,8 +30,7 @@ export default function CreatePost() {
     const variables = {
       ...credentials,
       image,
-      isPublished: Boolean(credentials.isPublished),
-      author: "60d62bc200d4454b00133a2f"
+      isPublished: Boolean(credentials.isPublished)
     }
     // CREATE_POST({ variables });
     const { data, loading, error } = await CREATE_POST({ variables });

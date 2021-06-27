@@ -2,7 +2,7 @@ const { checkIsAuth } = require("../authorization/authentication.helper");
 const { TransformPost, userLoader, postLoader } = require('../dataloader/transformed.dataloader')
 const postController = {
     posts: async (args, req) => {
-        console.log(`req.authHeader`, req.authHeader)
+        console.log(`req. console.log(req.user);`, req.user)
         console.log(req.isAuth)
         // checkIsAuth(req);
 
@@ -12,7 +12,12 @@ const postController = {
     createPost: async ({ postInput }, req) => {
         try {
             // checkIsAuth(req);
+            const credentials = {
+                ...postInput,
+                author: req.userId
+            }
             console.log(req.user);
+            console.log(`credentials `, credentials);
             const createdPost = await req.prisma.post.create({ data: postInput });
             return TransformPost(createdPost);
         } catch (error) {

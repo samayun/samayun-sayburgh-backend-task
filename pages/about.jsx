@@ -102,9 +102,9 @@ export default function Contcat() {
 
                         <p>
                             <h5>However I'm</h5>
-                            <b>• Expertise on</b> : HTML, CSS, JavaScript, ES6, React, Bootstrap, Material Design, Netlify, Firebase, React router.
-                            <b>• Comfortable at :</b> Redux, Node, Express, MongoDB, Material UI, SASS etc.
-                            <b>• Familiar with </b>: React Native, Rest API , Python, SQL, PHP etc.
+                            <b>• Expertise on</b> : HTML, CSS, JavaScript, ES6, React, Bootstrap, Material Design, Netlify, Firebase, React router. <br />
+                            <b>• Comfortable at :</b> Redux, Node, Express, MongoDB, Material UI, SASS etc. <br />
+                            <b>• Familiar with </b>: React Native, Rest API , Python, SQL, PHP etc. <br />
                             <b>• Tools</b>: Git, Chrome Dev Tool, VS Code etc.
                         </p>
 
