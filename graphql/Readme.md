@@ -198,10 +198,12 @@ model Post {
   author      String
   createdAt   DateTime @default(now())
 }
-```
-
-
-```js
-
+model Comment {
+  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  body      String
+  user      String
+  post      String
+  createdAt DateTime @default(now())
+}
 
 ```

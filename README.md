@@ -15,7 +15,7 @@
 * [How to work with multiple branch or team collaboration](docs/multile-branch-team-collaboration-guideline.md)
 
 * [How to Setup Prisma GrapHQL & Next.js Application ](docs/how-to-setup-graphql-prisma-nextjs-app.md)
-*  [How to Setup Prisma GrapHQL & Next.js Application ](docs/how-to-setup-graphql-prisma-nextjs-app.md)
+* [ GraphQL Queries & mutations ](graphql/Readme.md)
 
 ## How to run this project
  * Clone first `git clone https://github.com/samayun/samayun-sayburgh-backend-task.git samayun-sayburgh-backend-task`
@@ -24,6 +24,9 @@
  * rename file `.default.env` to `.env` & must include database string on ENVIRONMENT VARIABLES
 ```
   DATABASE_URL  = DATABASE_CONNECTION_STRING_for_production
+
+  JWT_SECRET_KEY=SECRET
+
 ```
  * run command `npm run dev`
  * browse: http://localhost:3000 for seeing main application views
