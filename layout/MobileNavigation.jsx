@@ -1,8 +1,54 @@
 import Categories from '../components/Categories';
-import routes from '../api/navigations';
+import { verifyToken } from '../lib/jwt';
+// import routes from '../api/navigations';
+function getToken(type) {
+    return typeof window === 'undefined' ? global?.sessionStorage?.getItem(type) : window?.sessionStorage?.getItem(type)
+}
+function isAuth(type = 'access_token') {
+    const token = getToken(type);
+    return verifyToken(token);
+}
+
 import Link from 'next/link';
 
 export default function MobileNavigation() {
+    const handlelogout = (type) => {
+        typeof window === 'undefined' ? global?.sessionStorage?.removeItem(type) : window?.sessionStorage?.removeItem(type);
+        window.location.reload();
+
+    }
+    const routes = [
+        {
+            name: "Home",
+            path: '/',
+            icon: "fas fa-home",
+            authorization: true
+        },
+        {
+            name: "Blogs",
+            path: '/blogs',
+            icon: "fas fa-book",
+            authorization: isAuth()
+        },
+        {
+            name: "Profile",
+            path: '/profile',
+            icon: "fas fa-user",
+            authorization: isAuth()
+        },
+        {
+            name: "About",
+            path: '/about',
+            icon: 'far fa-file-alt',
+            authorization: true
+        },
+        {
+            name: "Contact",
+            path: '/contact',
+            icon: "fas fa-phone",
+            authorization: true
+        }
+    ]
     return (
         <div className="fixed w-full h-full bg-black bg-opacity-25 left-0 top-0 z-10 opacity-0 invisible transition-all duration-500 xl:hidden" id="sidebar_wrapper">
             <div className="fixed top-0 w-72 h-full bg-white shadow-md z-10 flex flex-col transition-all duration-500 -left-80" id="sidebar">
@@ -20,7 +66,7 @@ export default function MobileNavigation() {
                     <div className="">
                         {
                             routes?.map((route) => {
-                                return (
+                                return route.authorization && (
                                     <Link href={route?.path}>
                                         <a
                                             href={route?.path}

@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "NOOB";
 
-exports.generateJWTToken = (userData, expireDate = '5m') => {
+exports.generateJWTToken = (userData, expireDate = '180m') => {
     // 86400
     return jwt.sign(userData, JWT_SECRET_KEY, {
         expiresIn: expireDate

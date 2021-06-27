@@ -7,19 +7,23 @@ const postController = {
         // checkIsAuth(req);
 
         const posts = await req.prisma.post.findMany();
-        return posts.map(TransformPost)
+        return posts.sort((a, b) => b.createdAt - a.createdAt).map(TransformPost)
     },
     createPost: async ({ postInput }, req) => {
         try {
-            // checkIsAuth(req);
-            const credentials = {
-                ...postInput,
-                author: req.userId
-            }
-            console.log(req.user);
-            console.log(`credentials `, credentials);
+            checkIsAuth(req);
+            // console.log(`createPost `, req.isAuth)
+            // console.log(`createPost req.user `, req.user)
+            // const credentials = {
+            //     ...postInput,
+            //     // author: req.userId
+            // }
+            // console.log(`credentials `, credentials);
             const createdPost = await req.prisma.post.create({ data: postInput });
-            return TransformPost(createdPost);
+            return {
+                ...createdPost,
+                author: req.user
+            };
         } catch (error) {
             console.log(error);
             throw new Error(error);

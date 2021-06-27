@@ -19,7 +19,13 @@ mutation createNewPost(
     id
     title
     slug
-    author
+    author {
+      id
+      name
+      email
+      username
+      role
+    }
     body
     image
     isPublished

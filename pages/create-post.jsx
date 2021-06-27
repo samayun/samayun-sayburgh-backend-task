@@ -8,18 +8,21 @@ import { useMutation } from "@apollo/client";
 import { initializeApollo } from '../lib/apollo';
 import QUERY_CREATE_POST from '../lib/queries/createNewPost.graphql';
 import Loading from '../components/Loading';
+import { verifyToken } from '../lib/jwt';
+import isAuth from '../lib/auth';
 
 export function getStaticProps() {
   return {
     props: { title: "Create A New Post" },
   };
 }
+const user = () => { }
 
 export default function CreatePost() {
-  const router = useRouter()
-  const [CREATE_POST] = useMutation(QUERY_CREATE_POST);
+  const router = useRouter();
+  const [CREATE_POST, { data, loading, error }] = useMutation(QUERY_CREATE_POST);
   const [image, setImage] = useState();
-  const [error, setError] = useState();
+  // const [error, setError] = useState();
   const {
     register,
     handleSubmit,
@@ -30,21 +33,21 @@ export default function CreatePost() {
     const variables = {
       ...credentials,
       image,
-      isPublished: Boolean(credentials.isPublished)
+      isPublished: Boolean(credentials.isPublished),
+      author: "60d62bc200d4454b00133a2f"
     }
+
+    console.log(isAuth().id)
     // CREATE_POST({ variables });
-    const { data, loading, error } = await CREATE_POST({ variables });
-    // // make sure all data is loaded
-    if (loading) {
-      return <Loading />
-    }
+    CREATE_POST({ variables });
     if (error) {
       console.log(`error `, error);
-      setError(error);
     }
-    if (data?.createPost) {
+    if (data) {
       // mutate posts state & push this on that array : data.createPost
       router.push('/');
+      alert("DONE");
+      console.log(data.createdPost);
     }
   }
   const _handleReaderLoaded = (readerEvt) => {
@@ -70,6 +73,7 @@ export default function CreatePost() {
       console.log(reader);
     }
   };
+  if (loading) return <Loading />
   return (
     <div className="w-screenX bg-white flex flex-col0 justify-center items-center">
       <div className="sm:flex-auto md:flex container">

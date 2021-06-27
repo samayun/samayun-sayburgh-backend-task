@@ -32,7 +32,7 @@ const authenticateToken = handler => (req, res) => {
     }
 
     const decodedToken = verifyToken(token);
-    console.log(`decodedToken`, decodedToken);
+    console.log(`req.user `, decodedToken);
     if (!decodedToken) {
         req.isAuth = false;
         return handler(req, res);
