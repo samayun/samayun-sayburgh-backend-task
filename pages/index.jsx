@@ -10,7 +10,6 @@ import ErrorComponent from '../components/ErrorComponent';
 
 function SingleBlog({ blog }) {
   const { title, slug, body, author, tags, createdAt, image } = blog;
-  console.log(`blog `, blog)
   return (
     <div className="rounded-sm bg-white p-4 pb-5 shadow-sm">
       <Link href={`/blog/${slug}`} key={slug}>

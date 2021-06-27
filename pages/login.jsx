@@ -7,10 +7,8 @@ import { initializeApollo } from '../lib/apollo';
 import QUERY_LOGIN from '../lib/queries/login.graphql';
 import Loading from '../components/Loading';
 import ErrorComponent from '../components/ErrorComponent';
-
 import { useRouter } from 'next/router';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { signInAction } from '../store/actions/auth.action';
+import { useAuth } from "../context/AuthReducer";
 
 export function getStaticProps() {
     return {
@@ -21,8 +19,7 @@ export default function Login() {
     const router = useRouter();
     const [login, { data, loading, error }] = useLazyQuery(QUERY_LOGIN)
     // const auth = useSelector(state => state.auth);
-    // const dispatch = useDispatch();
-
+    const { state, dispatch } = useAuth();
     const {
         register,
         handleSubmit,
@@ -35,9 +32,14 @@ export default function Login() {
         console.log(`error `, error?.message)
         console.log(`data`, data);
         if (data) {
+            dispatch({
+                type: "AUTH_USER",
+                payload: data?.login?.user,
+                access_token: data?.login?.access_token
+            })
             router.push('/');
             localStorage.setItem(`authData`, JSON.stringify(data.login))
-            sessionStorage.setItem('access_token', data?.login?.access_token);
+
         }
 
         // // dispatch(signInAction(credentials));
