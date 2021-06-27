@@ -5,7 +5,9 @@ query fetchPost($slug: String) {
     slug
     body
     author {
+      id
       name
+      username
       email
       role
     }

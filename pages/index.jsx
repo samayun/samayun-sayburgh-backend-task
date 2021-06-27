@@ -7,6 +7,7 @@ import { initializeApollo } from '../lib/apollo';
 import QUERY_POSTS from '../lib/queries/fetchPosts.graphql';
 import Loading from '../components/Loading';
 import ErrorComponent from '../components/ErrorComponent';
+import { useAuth } from "../context/AuthReducer";
 
 function SingleBlog({ blog }) {
   const { title, slug, body, author, tags, createdAt, image } = blog;
@@ -69,6 +70,7 @@ function Blogs({ blogs }) {
 //   };
 // }
 const App = ({ initialApolloState }) => {
+  const { state, dispatch } = useAuth();
   const { data, loading, error } = useQuery(QUERY_POSTS);
   // make sure all data is loaded
 
@@ -77,9 +79,17 @@ const App = ({ initialApolloState }) => {
     return <>
       <div className="flex bg-white px-3 py-2 justify-between items-center rounded-sm mb-5">
         <h5 className="text-base uppercase font-semibold font-roboto">POSTS</h5>
-        <Link href="/create-post">
-          <a className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition">Create Post</a>
-        </Link>
+        {
+          state?.user?.email ? (
+            <Link href="/create-post">
+              <a className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition">Create Post</a>
+            </Link>
+          ) : (
+            <Link href="/login">
+              <a className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition"> Login here to create blog & for some features </a>
+            </Link>
+          )
+        }
       </div>
       <ErrorComponent error={error.message || " Failed to fetch Posts"} />
     </>
@@ -91,12 +101,25 @@ const App = ({ initialApolloState }) => {
     <main className="pt-12 bg-gray-100 pb-12">
       <div className="container mx-auto px-4 flex flex-wrap lg:flex-nowrap">
         <div className="xl:w-8/12 lg:w-9/12 w-full  xl:ml-6 lg:mr-6">
-          <div className="flex bg-white px-3 py-2 justify-between items-center rounded-sm mb-5">
-            <h5 className="text-base uppercase font-semibold font-roboto">POSTS</h5>
-            <Link href="/create-post">
-              <a className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition">Create Post</a>
-            </Link>
-          </div>
+          {
+            state?.user?.email ? (
+              <div className="flex bg-white px-3 py-2 justify-between items-center rounded-sm mb-5">
+                <h5 className="text-base uppercase font-semibold font-roboto">POSTS</h5>
+                <Link href="/create-post">
+                  <a className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition">Create Post</a>
+                </Link>
+              </div>
+            ) : (
+              <div className="flex bg-white px-3 py-2 justify-between items-center rounded-sm mb-5">
+                <h5 className="text-base uppercase font-semibold font-roboto">Login here to create blog & for some features</h5>
+                <Link href="/login">
+                  <a className="text-white py-1 px-3 rounded-sm uppercase text-sm bg-blue-500 border border-blue-500 hover:text-blue-500 hover:bg-transparent transition"> Login here </a>
+                </Link>
+              </div>
+
+            )
+          }
+
           {loading && <Loading />}
           <Blogs blogs={data?.posts} />
         </div>

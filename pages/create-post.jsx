@@ -1,5 +1,6 @@
-import { useRouter } from 'next/router'
-import Link from "next/link";
+import { useRouter } from 'next/router';
+import { useAuth } from "../context/AuthReducer";
+import { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ShowError from "../components/ShowError";
@@ -8,19 +9,26 @@ import { useMutation } from "@apollo/client";
 import { initializeApollo } from '../lib/apollo';
 import QUERY_CREATE_POST from '../lib/queries/createNewPost.graphql';
 import Loading from '../components/Loading';
-import { verifyToken } from '../lib/jwt';
-import isAuth from '../lib/auth';
+
+import isAuth, { getToken } from '../lib/auth';
 
 export function getStaticProps() {
   return {
     props: { title: "Create A New Post" },
   };
 }
-const user = () => { }
 
 export default function CreatePost() {
+  const { state, dispatch } = useAuth();
   const router = useRouter();
-  const [CREATE_POST, { data, loading, error }] = useMutation(QUERY_CREATE_POST);
+  useEffect(() => {
+    if (!state?.user?.email) {
+      router.push('/');
+    }
+  }, []);
+  const [CREATE_POST, { data, loading, error }] = useMutation(QUERY_CREATE_POST, {
+    context: { headers: { authorization: `Bearer ${getToken('access_token')}` } }
+  });
   const [image, setImage] = useState();
   // const [error, setError] = useState();
   const {
@@ -34,19 +42,16 @@ export default function CreatePost() {
       ...credentials,
       image,
       isPublished: Boolean(credentials.isPublished),
-      author: "60d62bc200d4454b00133a2f"
+      author: isAuth()?.id
     }
 
     console.log(isAuth().id)
-    // CREATE_POST({ variables });
-    CREATE_POST({ variables });
-    if (error) {
-      console.log(`error `, error);
-    }
+
+    CREATE_POST({ variables }, { headers: sessionStorage.getItem(`access_token`) });
+
     if (data) {
       // mutate posts state & push this on that array : data.createPost
       router.push('/');
-      alert("DONE");
       console.log(data.createdPost);
     }
   }
@@ -79,7 +84,7 @@ export default function CreatePost() {
       <div className="sm:flex-auto md:flex container">
         {/* xl:w-8/12 lg:w-9/12 w-full xl:ml-6 lg:mr-6 */}
         <div className="bg-white sm:order-last md:order-first  w-12/12 w-full md:w-8/12  shadow-xl rounded p-5">
-          {error && <ShowError title="Unable to create post .send valid credentials" semiTitle="Failed to create Post" />}
+          {error && <ShowError title={error?.message || "Unable to create post .send valid credentials"} semiTitle="Failed to create Post" />}
           <h1 className="text-3xl font-medium">Create Post</h1>
           {errors.title && <ShowError title="title is required" />}
 

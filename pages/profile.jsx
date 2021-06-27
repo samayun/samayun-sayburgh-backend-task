@@ -1,5 +1,15 @@
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useAuth } from "../context/AuthReducer";
 
-export default function Contcat() {
+export default function Profile() {
+    const { state, dispatch } = useAuth();
+    const router = useRouter();
+    useEffect(() => {
+        if (!state?.user) {
+            router.back();
+        }
+    }, []);
     return (
         <main className="pt-12 bg-green-100 pb-12">
             <div className="container mx-auto px-4 flex flex-wrap lg:flex-nowrap">
@@ -8,8 +18,8 @@ export default function Contcat() {
                         <section className="flex flex-col md:flex-row gap-4      p-4 w-full justify-center">
                             <div className=" rounded-2xl flex flex-col px-8 justify-center items-center md:items-start order-2 md:order-1 md:rounded-tl-2xl md:rounded-bl-2xl">
                                 <div className="md:w-1/2 order-1 justify-center">
-                                    <h2 className="text-4xl  mb-4 tracking-wider text-green-600"> Samayun Miah Chowdhury </h2>
-                                    <h2 className="text-3xl  mb-4 tracking-wider text-gray-600"> Web Aplication Developer </h2>
+                                    <h2 className="text-4xl  mb-4 tracking-wider text-green-600">{state?.user?.name} </h2>
+                                    <h2 className="text-3xl  mb-4 tracking-wider text-gray-600"> {state?.user?.email} </h2>
 
                                 </div>
                             </div>

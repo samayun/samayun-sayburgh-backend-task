@@ -2,8 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import ShowError from "../components/ShowError";
-// import { useDispatch, useSelector } from 'react-redux';
-// import { signUpAction } from '../store/actions/auth.action';
+import { useMutation } from "@apollo/client";
+import MUTATE_REGISTER from '../lib/queries/register.graphql';
+import Loading from '../components/Loading';
+import { useRouter } from 'next/router';
+import { useAuth } from "../context/AuthReducer";
+import { useEffect } from "react";
 
 export function getStaticProps() {
     return {
@@ -11,29 +15,46 @@ export function getStaticProps() {
     };
 }
 export default function Register() {
-    // const auth = useSelector(state => state.auth);
-    // const dispatch = useDispatch();
-
+    const router = useRouter();
+    const [signup, { data, loading, error }] = useMutation(MUTATE_REGISTER);
+    const { state, dispatch } = useAuth();
     const {
         register,
         handleSubmit,
-        reset,
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (credentials) => {
-        // dispatch(signUpAction(credentials));
-        console.log(credentials);
-        // reset();
+    const onSubmit = variables => {
+        signup({ variables });
+        console.log(`variables `, variables)
+        console.log(`error `, error?.message)
+        console.log(`data`, data);
+        if (data?.register) {
+            dispatch({
+                type: "AUTH_USER",
+                payload: data?.register?.user,
+                access_token: data?.register?.access_token
+            })
+            router.push('/');
+            localStorage.setItem(`authData`, JSON.stringify(data.login))
+        }
     };
+    useEffect(() => {
+        if (state?.user) {
+            router.back();
+        }
+    }, []);
+
+    if (loading) return <Loading />
     return (
         <div className="w-screen bg-white flex flex-col space-y-10 justify-center items-center">
             <div className="bg-white  shadow-xl rounded p-5">
                 <p className="flex justify-center items-center border-radius-5 bg-blue px-3">
                     <Image src="/logo.png" height="100px" width="100px" />
                 </p>
+                {error?.message && <ShowError semiTitle="Register Failed " title={error?.message} />}
                 {errors.name && <ShowError title="Name is required" />}
-                {errors.username && <ShowError title={"Usernamem is required"} />}
+                {errors.username && <ShowError title={"Username is required"} />}
                 {errors.email && (
                     <ShowError title={`Please provide valid email address `} />
                 )}

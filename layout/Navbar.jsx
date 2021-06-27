@@ -1,13 +1,8 @@
 import Link from "next/link"
 import Image from "next/image";
-// import { isAuth } from '../lib/auth';
 import { verifyToken } from '../lib/jwt';
 import { useAuth } from "../context/AuthReducer";
 
-// import routes from '../api/navigations';
-function getToken(type) {
-    return typeof window === 'undefined' ? global?.sessionStorage?.getItem(type) : window?.sessionStorage?.getItem(type)
-}
 
 
 export default function Navbar() {

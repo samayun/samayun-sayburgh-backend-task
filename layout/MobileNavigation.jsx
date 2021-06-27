@@ -1,21 +1,23 @@
 import Categories from '../components/Categories';
-import { verifyToken } from '../lib/jwt';
-// import routes from '../api/navigations';
-function getToken(type) {
-    return typeof window === 'undefined' ? global?.sessionStorage?.getItem(type) : window?.sessionStorage?.getItem(type)
-}
-function isAuth(type = 'access_token') {
-    const token = getToken(type);
-    return verifyToken(token);
-}
+import { useAuth } from "../context/AuthReducer";
 
 import Link from 'next/link';
 
 export default function MobileNavigation() {
-    const handlelogout = (type) => {
-        typeof window === 'undefined' ? global?.sessionStorage?.removeItem(type) : window?.sessionStorage?.removeItem(type);
-        window.location.reload();
+    const { state, dispatch } = useAuth();
 
+    const handlelogout = type => {
+        typeof window === 'undefined' ? global?.sessionStorage?.removeItem(type) : window?.sessionStorage?.removeItem(type);
+        // window.location.reload();
+        dispatch({
+            type: "AUTH_LOGOUT",
+            payload: null
+        });
+    }
+    function isAuth(type = 'access_token') {
+        // const token = getToken(type);
+        // return verifyToken(state.access_token);
+        return state.user
     }
     const routes = [
         {
@@ -28,13 +30,13 @@ export default function MobileNavigation() {
             name: "Blogs",
             path: '/blogs',
             icon: "fas fa-book",
-            authorization: isAuth()
+            authorization: isAuth() || false
         },
         {
             name: "Profile",
             path: '/profile',
             icon: "fas fa-user",
-            authorization: isAuth()
+            authorization: isAuth() || false
         },
         {
             name: "About",

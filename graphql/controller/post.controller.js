@@ -29,7 +29,7 @@ const postController = {
             throw new Error(error);
         }
     },
-    post: async ({ id, slug }, { req, prisma }) => {
+    post: async ({ slug }, req) => {
         // checkIsAuth(req);
         try {
             const fetchedPost = await postLoader.load(slug);

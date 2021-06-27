@@ -2,13 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import ShowError from "../components/ShowError";
-import { useLazyQuery } from "@apollo/client";
-import { initializeApollo } from '../lib/apollo';
+import { useQuery, useLazyQuery } from "@apollo/client";
 import QUERY_LOGIN from '../lib/queries/login.graphql';
 import Loading from '../components/Loading';
-import ErrorComponent from '../components/ErrorComponent';
 import { useRouter } from 'next/router';
 import { useAuth } from "../context/AuthReducer";
+import { useEffect } from "react";
 
 export function getStaticProps() {
     return {
@@ -17,8 +16,7 @@ export function getStaticProps() {
 }
 export default function Login() {
     const router = useRouter();
-    const [login, { data, loading, error }] = useLazyQuery(QUERY_LOGIN)
-    // const auth = useSelector(state => state.auth);
+    const [login, { data, loading, error }] = useLazyQuery(QUERY_LOGIN);
     const { state, dispatch } = useAuth();
     const {
         register,
@@ -26,7 +24,7 @@ export default function Login() {
         formState: { errors },
     } = useForm();
 
-    const onSubmit = async variables => {
+    const onSubmit = variables => {
         login({ variables });
         console.log(`variables `, variables)
         console.log(`error `, error?.message)
@@ -41,10 +39,13 @@ export default function Login() {
             localStorage.setItem(`authData`, JSON.stringify(data.login))
 
         }
-
-        // // dispatch(signInAction(credentials));
-        // reset();
     };
+    useEffect(() => {
+        if (state?.user) {
+            router.back();
+        }
+    }, []);
+
     if (loading) return <Loading />
     return (
         <div className="w-screen bg-white flex flex-col space-y-10 justify-center items-center">
